@@ -2,13 +2,21 @@
 <html>
 <body>
     <div>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+    <div>
         <form method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
             <input type="text" name="text" placeholder="давай пиши">
             <input type="text" name="tag" placeholder="затэгай">
             <button type="submit">добавить</button>
         </form>
     </div>
     <form method="post" action="filter">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
         <input type="text" name="filter">
         <button type="submit">найти</button>
     </form>
