@@ -29,6 +29,7 @@ public class RegistrationController {
             model.put("message", "User exists!!!!!!111");
             return "registration";
         }
+        newUser.setActive(true);
         newUser.setRoles(Collections.singleton(Role.USER));
         userRepository.save(newUser);
         return "redirect:/login";
