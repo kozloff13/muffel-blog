@@ -1,7 +1,9 @@
 package com.technoir.muffel.controllers;
 import com.technoir.muffel.domain.Article;
+import com.technoir.muffel.domain.User;
 import com.technoir.muffel.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,11 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String addArticle(@RequestParam String text, @RequestParam String tag, Map<String, Object> model) {
-        Article article = new Article(text, tag);
+    public String addArticle(
+            @AuthenticationPrincipal User user,
+            @RequestParam String text,
+            @RequestParam String tag, Map<String, Object> model) {
+        Article article = new Article(text, tag, user);
         articleRepository.save(article);
         Iterable<Article> articles = articleRepository.findAll();
         model.put("articles", articles);
