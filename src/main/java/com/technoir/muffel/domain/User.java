@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,24 +19,83 @@ public class User implements UserDetails {
 
     private String lastname;
 
-    private String username;
+    private String nickname;
+
+    private String email;
 
     private String password;
 
-    private boolean active;
+    private Boolean confirmed;
 
-    public boolean isActive() {
-        return active;
-    }
+    private Boolean blocked;
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    private Boolean passwordReseted;
+
+    private Boolean deleted;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(String firstname, String lastname, String nickname,
+                String email, String password,
+                Boolean confirmed, Boolean blocked, Boolean passwordReseted, Boolean deleted,
+                Set<Role> roles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.confirmed = confirmed;
+        this.blocked = blocked;
+        this.passwordReseted = passwordReseted;
+        this.deleted = deleted;
+        this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public Boolean getPasswordReseted() {
+        return passwordReseted;
+    }
+
+    public void setPasswordReseted(Boolean passwordReseted) {
+        this.passwordReseted = passwordReseted;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public Long getId() {
         return id;
@@ -62,37 +121,12 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive();
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {

@@ -24,13 +24,20 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(User newUser, Map<String, Object> model) {
-        User user = userRepository.findByUsername(newUser.getUsername());
+        User user = userRepository.findByNickname(newUser.getNickname());
         if (user != null) {
             model.put("message", "User exists!!!!!!111");
             return "registration";
         }
-        newUser.setActive(true);
-        newUser.setRoles(Collections.singleton(Role.USER));
+
+//        newUser.setActive(true);
+
+        if (newUser.getFirstname() == null && newUser.getLastname() == null) {
+            newUser.setRoles(Collections.singleton(Role.ANONYMOUS));
+        } else {
+            newUser.setRoles(Collections.singleton(Role.REGULAR));
+        }
+
         userRepository.save(newUser);
         return "redirect:/login";
     }
