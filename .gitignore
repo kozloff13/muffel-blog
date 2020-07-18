@@ -1,1 +1,8 @@
 /.idea/
+/client/node_modules/
+/.mvn/
+/target/
+/levelup.iml
+/HELP.md
+/mvnw.cmd
+/mvnw
