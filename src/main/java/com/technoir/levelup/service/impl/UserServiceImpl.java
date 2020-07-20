@@ -8,12 +8,11 @@ import com.technoir.levelup.repository.UserRepository;
 import com.technoir.levelup.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -22,6 +21,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @Value("${locale}")
+    private String locale;
+
+    private ResourceBundle bundle = ResourceBundle.getBundle("messages", new Locale(locale != null ? locale : "ru"));
 
     @Autowired
     public UserServiceImpl(
@@ -60,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         User result = userRepository.findByUsername(username);
-        log.info("User: {} was found", result.getUsername());
+        log.info(bundle.getString("user_was_found"), result.getUsername());
         return result;
     }
 
