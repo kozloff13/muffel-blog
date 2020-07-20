@@ -5,6 +5,7 @@ import com.technoir.levelup.model.User;
 import com.technoir.levelup.security.jwt.JwtTokenProvider;
 import com.technoir.levelup.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 @RestController
 @RequestMapping(value = "/api/auth/")
@@ -28,6 +31,11 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final UserService userService;
+
+    @Value("${locale}")
+    private String locale;
+
+    private ResourceBundle bundle = ResourceBundle.getBundle("messages", new Locale(locale != null ? locale : "ru"));
 
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
@@ -45,7 +53,7 @@ public class AuthenticationController {
             User user = userService.findByUsername(username);
 
             if(user == null) {
-                throw new UsernameNotFoundException("User " + username + " not found");
+                throw new UsernameNotFoundException(String.format(bundle.getString("user_not_found"), username));
             }
 
             String token = jwtTokenProvider.createToken(username, user.getRoles());
