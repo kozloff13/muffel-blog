@@ -14,10 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class JwtTokenProvider {
@@ -26,9 +23,13 @@ public class JwtTokenProvider {
     private String secret;
     @Value("${jwt.token.expired}")
     private Long validityInMil;
+    @Value("${locale}")
+    private String locale;
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    private ResourceBundle bundle = ResourceBundle.getBundle("messages", new Locale(locale != null ? locale : "ru"));
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -76,21 +77,16 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            if(claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("Jwt token expired or invalid");
+            throw new JwtAuthenticationException(bundle.getString("token_expired"));
         }
     }
 
     private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
 
-        userRoles.forEach(role -> {
-            result.add(role.getName());
-        });
+        userRoles.forEach(role -> result.add(role.getName()));
 
         return result;
     }

@@ -49,16 +49,14 @@ public class UserServiceImpl implements UserService {
 
         User registeredUser = userRepository.save(user);
 
-        log.info("user: {} registered successfully", registeredUser.getUsername()); //себе на заметку прокидывание переменной в лог
+        log.info(String.format(bundle.getString("user_reg_success"), registeredUser.getUsername()));
 
         return registeredUser;
     }
 
     @Override
     public List<User> getAll() {
-        List<User> result = userRepository.findAll();
-        log.info("users: {} found", result.size());
-        return result;
+        return userRepository.findAll();
     }
 
     @Override
@@ -72,10 +70,10 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         User result = userRepository.findById(id).orElse(null);
         if(result == null) {
-            log.warn("user not found");
+            log.warn(String.format(bundle.getString("user_not_found"), id));
             return null;
         }
-        log.info("User {} was found", result.getUsername());
+        log.info(bundle.getString("user_was_found"), result.getUsername());
         return result;
     }
 
@@ -83,10 +81,8 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         User result = userRepository.findByEmail(email);
         if(result == null) {
-            log.warn("User with email: {} was found", email);
             return null;
         }
-        log.info("User with email: {} was found", result.getEmail());
         return result;
     }
 
@@ -94,11 +90,11 @@ public class UserServiceImpl implements UserService {
     public void markAsDeleted(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if(user == null) {
-            log.warn("user not found");
+            log.warn(String.format(bundle.getString("user_not_found"), id));
         } else {
             user.setStatus(Status.DELETED);
             userRepository.save(user);
-            log.info("User with id={} mark as deleted", id);
+            log.info(String.format(bundle.getString("user_mark_deleted"), id));
         }
     }
 
@@ -106,17 +102,17 @@ public class UserServiceImpl implements UserService {
     public void setNotActive(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if(user == null) {
-            log.warn("user not found");
+            log.warn(String.format(bundle.getString("user_not_found"), id));
         } else {
             user.setStatus(Status.NOT_ACTIVE);
             userRepository.save(user);
-            log.info("User with id={} mark as not active", id);
+            log.info(String.format(bundle.getString("user_mark_noactive"), id));
         }
     }
 
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
-        log.info("User with id={} deleted", id);
+        log.info(String.format(bundle.getString("user_deleted"), id));
     }
 }
