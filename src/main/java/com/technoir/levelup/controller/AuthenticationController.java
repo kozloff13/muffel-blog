@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 @RestController
-@RequestMapping(value = "/api/auth/")
+@RequestMapping(value = "/api")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -44,7 +44,7 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
 
         try {
