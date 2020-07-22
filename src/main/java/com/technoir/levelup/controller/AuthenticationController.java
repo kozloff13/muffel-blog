@@ -64,7 +64,7 @@ public class AuthenticationController {
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
+            throw new BadCredentialsException(bundle.getString("invalid_cred"));
         }
     }
 }

@@ -6,12 +6,15 @@ import com.technoir.levelup.model.User;
 import com.technoir.levelup.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Slf4j
 @RestController
@@ -19,6 +22,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @Value("${locale}")
+    private String locale;
+
+    private ResourceBundle bundle = ResourceBundle.getBundle("messages", new Locale(locale != null ? locale : "ru"));
 
     @Autowired
     public UserController(UserService userService) {
@@ -59,7 +67,7 @@ public class UserController {
             }
         });
         if (result.contains("ROLE_ADMIN")) {
-            return ResponseEntity.badRequest().body("Нельзя пометить на удаление администратора!");
+            return ResponseEntity.badRequest().body(bundle.getString("no_mark_admin_deleted"));
         } else {
             userService.markAsDeleted(id);
             return ResponseEntity.ok(AdminUserDto.fromUser(user).getStatus());
@@ -77,7 +85,7 @@ public class UserController {
             }
         });
         if (result.contains("ROLE_ADMIN")) {
-            return ResponseEntity.badRequest().body("Нельзя сделать неактивным администратора!");
+            return ResponseEntity.badRequest().body(bundle.getString("no_mark_admin_noactive"));
         } else {
             userService.setNotActive(id);
             return ResponseEntity.ok(AdminUserDto.fromUser(user).getStatus());
