@@ -1,1 +1,100 @@
-<p>auth works!</p>
+<div class="page login-page">
+  <div class="container">
+    <div class="form-outer text-center d-flex align-items-center">
+      <div
+        class="form-inner box-effect"
+        style="width: 100%"
+        *ngIf="!isLoading; else loading"
+      >
+        <div class="logo text-uppercase">
+          <strong class="text-primary">Авторизация</strong>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="alert">
+          {{ alert }}
+        </div>
+        <form class="text-left" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group-material">
+            <input
+              type="text"
+              class="input-material"
+              placeholder="Юзернейм"
+              appAutoFocus="true"
+              formControlName="username"
+              [ngClass]="{
+                invalid: form.get('username').invalid && form.get('username').touched
+              }"
+            />
+            <span
+              class="helper-text red-text"
+              *ngIf="form.get('username').invalid && form.get('username').touched"
+            >
+              <span *ngIf="form.get('username').errors['required']">
+                Юзернейм не должен быть пустым
+              </span>
+              <span *ngIf="form.get('username').errors['username']">
+                Введите корректный юзернейм
+              </span>
+            </span>
+          </div>
+          <div class="form-group-material">
+            <input
+              type="password"
+              placeholder="Пароль"
+              class="input-material"
+              formControlName="password"
+              [ngClass]="{
+                invalid:
+                  form.get('password').invalid && form.get('password').touched
+              }"
+            />
+            <span
+              class="helper-text red-text"
+              *ngIf="
+                form.get('password').invalid && form.get('password').touched
+              "
+            >
+              <span *ngIf="form.get('password').errors['required']">
+                Пароль не должен быть пустым
+              </span>
+              <span
+                *ngIf="
+                  form.get('password').errors['minlength'] &&
+                  form.get('password').errors['minlength']['requiredLength']
+                "
+              >
+                Пароль должен быть больше
+                {{ form.get('password').errors['minlength']['requiredLength'] }}
+                символов. Сейчас
+                {{ form.get('password').errors['minlength']['actualLength'] }}
+              </span>
+            </span>
+          </div>
+          <div class="form-group text-center" style="display: flex">
+            <button
+              type="submit"
+              class="btn btn-success mr-3"
+              style="cursor: pointer; color: #fff; width: 48%;"
+              [disabled]="form.invalid || form.disabled"
+            >
+              Войти
+            </button>
+            <button routerLink="/" class="btn btn-secondary" style="width: 48%">
+              Вернуться на сайт
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="form-inner box-effect" style="width: 100%">
+    <div class="logo text-uppercase">
+      <div class="text-primary">Идет проверка прав доступа!</div>
+      <div class="text-primary">
+        Пожалуйста подождите
+      </div>
+    </div>
+    <app-loader></app-loader>
+  </div>
+</ng-template>
