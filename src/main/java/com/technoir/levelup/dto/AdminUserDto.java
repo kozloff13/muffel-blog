@@ -1,12 +1,9 @@
 package com.technoir.levelup.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.technoir.levelup.model.Role;
 import com.technoir.levelup.model.Status;
 import com.technoir.levelup.model.User;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

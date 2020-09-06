@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
 
     @Value("${locale}")
     private String locale;
-
     private ResourceBundle bundle = ResourceBundle.getBundle("messages", new Locale(locale != null ? locale : "ru"));
 
     @Autowired

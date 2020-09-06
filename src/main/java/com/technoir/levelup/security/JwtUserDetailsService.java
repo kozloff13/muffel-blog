@@ -1,7 +1,6 @@
 package com.technoir.levelup.security;
 
 import com.technoir.levelup.model.User;
-import com.technoir.levelup.security.jwt.JwtUser;
 import com.technoir.levelup.security.jwt.JwtUserFactory;
 import com.technoir.levelup.service.UserService;
 import lombok.extern.slf4j.Slf4j;
