@@ -28,7 +28,7 @@
     "font-awesome": "4",
     "jwt-decode": "^2.2.0",
     "masonry-layout": "^4.2.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ng-pick-datetime": "^7.0.0",
     "ng2-ckeditor": "^1.2.4",
     "ng2-file-upload": "^1.4.0",
