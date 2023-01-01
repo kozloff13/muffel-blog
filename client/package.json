@@ -37,12 +37,12 @@
     "ngx-youtube-player": "^7.1.1",
     "popper.js": "^1.14.7",
     "rxjs": "~6.4.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^13.2.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.800.0",
+    "@angular-devkit/build-angular": "~15.0.4",
     "@angular/cli": "~8.0.3",
     "@angular/compiler-cli": "~8.0.1",
     "@angular/language-service": "~8.0.1",
